@@ -43,9 +43,6 @@ def sort_folder(path: Path) -> None:
         if item.is_file():
             category = get_categories(item)
             move_file(item, path, category)
-        elif item.is_dir():
-            sort_folder(item)
-
         elif item.is_file() and item.suffix.lower() in CATEGORIES['Archives']:
             unpack_archive(item) 
 
