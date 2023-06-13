@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
 import shutil
+import uuid
+
 
 
 from normalize import normalize
@@ -12,8 +14,14 @@ CATEGORIES = {"Audio": [".mp3", ".ogg", ".wav", ".amr"],
               "Video": [".avi", ".mp4", ".mov", ".mkv"],
               "Archives": [".zip", ".gz", ".tar"]}
 
-def unpack_archive(file: Path)-> None:
-    shutil.unpack_archive(str(file), str(file.parent))
+
+def unpack_archive(path: Path) -> None:
+    archive_folder = "Archives"
+    for item in path.glob(f"{archive_folder}/*"):
+        filename = item.stem
+        arh_dir = path.joinpath(path/ archive_folder / filename)
+        arh_dir.mkdir()
+        shutil.unpack_archive(item, arh_dir)
 
 
 def move_file(file: Path, root_dir: Path, categorie: str) -> None:
@@ -25,8 +33,8 @@ def move_file(file: Path, root_dir: Path, categorie: str) -> None:
     # print(target_dir.joinpath(f"{normalize(path.stem)}{path.suffix}"))
     new_name = target_dir.joinpath(f"{normalize(file.stem)}{file.suffix}")
     if new_name.exists():
-       new_name = new_name.with_name(
-           f"{new_name.stem}{file.suffix}")
+      new_name = new_name.with_name(
+          f"{new_name.stem}-{uuid.uuid4()}{file.suffix}")
     file.rename(new_name)
 
 
@@ -43,8 +51,8 @@ def sort_folder(path: Path) -> None:
         if item.is_file():
             category = get_categories(item)
             move_file(item, path, category)
-        elif item.is_file() and item.suffix.lower() in CATEGORIES['Archives']:
-            unpack_archive(item) 
+        #elif item.is_file() and item.suffix.lower() in CATEGORIES['Archives']:
+            #unpack_archive(item)
 
 
 def delete_empty_folders(path: Path) -> None:
@@ -55,7 +63,8 @@ def delete_empty_folders(path: Path) -> None:
 
 def main():
     try:
-        path = Path(sys.argv[1])
+        path = Path("C:\Testfolder")
+        #path = Path(sys.argv[1])
     except IndexError:
         return "No path to folder"
 
@@ -63,8 +72,10 @@ def main():
         return f"Folder with path {path} does not exists."
 
     sort_folder(path)
+    unpack_archive(path)
     delete_empty_folders(path)
     
+    return "All done"
 
 
 if __name__ == "__main__":
