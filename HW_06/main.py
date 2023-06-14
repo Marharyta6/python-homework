@@ -58,7 +58,8 @@ def sort_folder(path: Path) -> None:
 def delete_empty_folders(path: Path) -> None:
     folders_to_delete = [f for f in path.glob("**")]
     for folder in folders_to_delete[::-1]:
-        folder.rmdir() 
+        if folder.is_dir() and not any(folder.iterdir()):
+            folder.rmdir() 
 
 
 def main():
