@@ -75,8 +75,8 @@ def delete_empty_folders(path: Path) -> None:
 
 def main():
     try:
-        path = Path("C:\Testfolder")
-        #path = Path(sys.argv[1])
+        #path = Path("C:\Testfolder")
+        path = Path(sys.argv[1])
     except IndexError:
         return "No path to folder"
 
