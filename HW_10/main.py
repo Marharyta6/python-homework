@@ -10,6 +10,11 @@ class Field:
     def __init__(self, value=None):
         self.value = value
 
+    def __str__(self) -> str:
+        return self.value
+
+    def __repr__(self) -> str:
+        return str(self)
 
 class Name(Field):
     pass
@@ -20,7 +25,7 @@ class Phone(Field):
 
 
 class Record:
-    def __init__(self, name):
+    def __init__(self, name: Name, phone: Phone = None) -> None:
         self.name = name
         self.phones = []
 
@@ -140,39 +145,7 @@ def main():
         if func == exit_command:
             break
 
-        # if user_input in ("good bye", "close", "exit"):
-        #     print()
-        #     break
-
-        # if user_input == "hello":
-        #     print("How can I help you?")
-
-        # elif user_input.startswith("add "):
-        #     data = user_input[4:].split(" ")
-        #     if len(data) != 2:
-        #         print("Give me name and phone please")
-        #     else:
-        #         name, phone = data
-        #         print(add_contact(name, phone))
-
-        # elif user_input.startswith("change "):
-        #     data = user_input[7:].split(" ")
-        #     if len(data) != 2:
-        #         print("Give me name and phone please")
-        #     else:
-        #         name, phone = data
-        #         print(change_phone(name, phone))
-
-        # elif user_input.startswith("phone "):
-        #     name = user_input[6:].strip()
-        #     print(get_phone(name))
-
-        # elif user_input == "show all":
-        #     print(show_all_contacts())
-
-        # else:
-        #     print("Invalid command. Please try again.")
-
 
 if __name__ == "__main__":
     main()
+    
